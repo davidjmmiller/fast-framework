@@ -16,6 +16,9 @@ $path = array();
 $path['route'] = '../private/routes/';
 $path['lib'] = '../private/lib/';
 $path['config'] = '../private/config/';
+$path['templates'] = '../private/templates/';
+$path['components'] = '../private/templates/components/';
+$path['layout'] = '../private/templates/layout/';
 
 
 $g_path = trim(isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO']:'');
