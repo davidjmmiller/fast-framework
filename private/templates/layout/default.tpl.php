@@ -16,9 +16,9 @@
 </nav>
 <div class="content">
     <aside>
-        <?php echo $component['date']; ?>
+        <?php echo $components['date']; ?>
     </aside>
-    <?php echo $component['content']; ?>
+    <?php echo $content_main; ?>
 </div>
 <footer>
     &copy; Copyright <?php echo date('Y');?>

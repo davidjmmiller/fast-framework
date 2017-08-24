@@ -3,12 +3,15 @@
 
 // Components
 ob_start();
+require $path['pages'].'index/index.tpl.php';
+$content_main = ob_get_contents();
+ob_end_clean();
+
+ob_start();
 require $path['components'].'date.tpl.php';
 $component['date'] = ob_get_contents();
 ob_end_clean();
 
-// Main content
-$component['content'] = "<h2>Hello World</h2>";
 
 
 // Layout

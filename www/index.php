@@ -13,13 +13,15 @@ $config['database']['name'] = 'fast';
 $config['database']['host'] = 'localhost';
 $config['database']['port'] = '3306';
 $config['database']['username'] = 'root';
-$config['database']['password'] = '';
+$config['database']['password'] = 'David88';
 
 // Paths
 $path = array();
 $path['route'] = '../private/routes/';
 $path['components'] = '../private/templates/components/';
 $path['layout'] = '../private/templates/layout/';
+$path['pages'] = '../private/templates/pages/';
+
 
 // Error handler
 set_error_handler (
