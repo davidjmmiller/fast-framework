@@ -39,7 +39,7 @@ else {
         require $filename;
     }
     else{
-        require $path['route'].'404.route.php';
+        require $path['route'].$routes['404'].'.route.php';
     }
 }
 
