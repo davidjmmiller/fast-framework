@@ -1,5 +1,27 @@
 <?php
 
+// Routes definition
+$routes = array();
+$routes['index'] = 'index';
+$routes['404'] = '404';
+$routes['list'] = 'list';
+$routes['admin'] = 'admin/index';
+
+// Configurations
+$config['database'] = array();
+$config['database']['name'] = 'fast';
+$config['database']['host'] = 'localhost';
+$config['database']['port'] = '3306';
+$config['database']['username'] = 'root';
+$config['database']['password'] = '';
+
+// Paths
+$path = array();
+$path['route'] = '../private/routes/';
+$path['components'] = '../private/templates/components/';
+$path['layout'] = '../private/templates/layout/';
+
+// Error handler
 set_error_handler (
     function($errno, $errstr, $errfile, $errline) {
         global $g_log;
@@ -12,26 +34,9 @@ set_error_handler (
     }
 );
 
-$path = array();
-$path['route'] = '../private/routes/';
-$path['lib'] = '../private/lib/';
-$path['config'] = '../private/config/';
-$path['templates'] = '../private/templates/';
-$path['components'] = '../private/templates/components/';
-$path['layout'] = '../private/templates/layout/';
-
-
 $g_path = trim(isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO']:'');
 if (substr($g_path,0,1) == '/') $g_path = substr($g_path,1);
 if (substr($g_path,-1,1) == '/') $g_path = substr($g_path,0,-1);
-
-// Routes definition
-$routes = array();
-$routes['index'] = 'index';
-$routes['404'] = '404';
-$routes['list'] = 'list';
-$routes['admin'] = 'admin/index';
-
 
 if ($g_path == '' || $g_path == '/'){
     require $path['route'].$routes['index'].'.route.php';
@@ -51,3 +56,56 @@ if (is_array($g_log) && count($g_log) > 0){
     pre($g_log);
 }
 
+
+
+/* Functions */
+
+// Utils
+function pre($var){
+    echo '<pre>'.print_r($g_log,true).'</pre>';
+}
+
+// Database
+function db_connect(){
+    global $config;
+    static $link;
+    if (isset($link)) {
+        // Connection already exists
+        return $link;
+    }
+    $link = mysqli_connect(
+        $config['database']['host'], 
+        $config['database']['username'], 
+        $config['database']['password'], 
+        $config['database']['name'],
+        $config['database']['port']
+    );
+
+    if (!$link) {
+        return false;
+    }
+
+    // New connection
+    return $link;
+}
+
+function db_query($sql){
+    $link = db_connect();
+    if ($result = mysqli_query($link, $sql)){
+        return $result;
+    }
+    elog(mysqli_error($link));
+    return false;
+}
+
+function db_fetch($result){
+    return mysqli_fetch_assoc($result);
+}
+
+function db_free($result){
+    mysqli_free_result($result);
+}
+
+function db_num_rows($result){
+    return mysqli_num_rows($result);
+}

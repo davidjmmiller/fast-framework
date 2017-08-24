@@ -1,9 +1,5 @@
 <?php
 
-require $path['config'].'database.conf.php';
-require $path['lib'].'util.lib.php';
-require $path['lib'].'database.lib.php';
-
 $result = db_query('select * from user');
 
 while($row = db_fetch($result)){
