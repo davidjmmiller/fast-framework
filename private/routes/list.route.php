@@ -1,15 +1,8 @@
 <?php
 
-$result = db_query('select * from user');
+$region['left-bar'] .= component('utils/date',array());
+$region['main'] .= component('page/list',array());
+$region['footer'] .= component('utils/date',array());
+$params['region'] = $region;
 
-while($row = db_fetch($result)){
-    echo $row['name'].'<br>';
-}
-
-db_free($result);
-
-$result = db_query('select * from user order by name ASC');
-
-while($row = db_fetch($result)){
-    echo $row['name'].'<br>';
-}
+tpl('default',$params,0);
