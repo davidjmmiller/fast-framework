@@ -16,11 +16,12 @@
 </nav>
 <div class="content">
     <aside>
-        <?php echo $components['date']; ?>
+        <?php region('left-bar'); ?>
     </aside>
-    <?php echo $content_main; ?>
+    <?php region('main'); ?>
 </div>
 <footer>
+    <?php region('footer');?>
     &copy; Copyright <?php echo date('Y');?>
 </footer>
 </body>
