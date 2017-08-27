@@ -21,6 +21,8 @@ $path['route'] = '../private/routes/';
 $path['components'] = '../private/components/';
 $path['templates'] = '../private/templates/';
 
+global $g_log;
+$g_log = array();
 
 // Error handler
 set_error_handler (
@@ -53,7 +55,9 @@ else {
 }
 
 // Showing errors
+global $g_log;
 if (is_array($g_log) && count($g_log) > 0){
+    echo "Errors: ";
     pre($g_log);
 }
 
@@ -63,7 +67,7 @@ if (is_array($g_log) && count($g_log) > 0){
 
 // Utils
 function pre($var){
-    echo '<pre>'.print_r($g_log,true).'</pre>';
+    echo '<pre>'.print_r($var,true).'</pre>';
 }
 
 // Database
@@ -95,7 +99,6 @@ function db_query($sql){
     if ($result = mysqli_query($link, $sql)){
         return $result;
     }
-    elog(mysqli_error($link));
     return false;
 }
 
