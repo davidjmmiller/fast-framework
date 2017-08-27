@@ -115,7 +115,7 @@ function slash($t){
     return str_replace('/','-',$t);
 }
 
-function component($name, $params){
+function component($name, $params, $expiration = 0){
     global $path;
     ob_start();
     require $path['components'].$name.'.comp.php';
