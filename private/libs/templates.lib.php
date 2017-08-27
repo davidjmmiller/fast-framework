@@ -3,8 +3,15 @@
 /* Functions */
 
 
-function component($name, $params, $expiration = 0, $type = 'public'){
+function component($name, $params, $expiration = 0, $type = 0, $crc = NULL){
     global $path;
+    // Checking cache files
+    $file_path = $path['cache'].($type == 0 ? 'public/' : 'private/'.session_id().'/').$name.'/'.abs(crc32(serialize($params)));
+
+    if (file_exists($file_path)){
+        $output = file_get_contents($file_path.'/component.cache.php');
+        
+    }
     ob_start();
     require $path['components'].$name.'.comp.php';
     $content = ob_get_contents();

@@ -10,6 +10,7 @@ require '../private/libs/utils.lib.php';
 require '../private/libs/templates.lib.php';
 require '../private/libs/database.lib.php';
 
+session_start();
 
 global $g_log;
 $g_log = array();
