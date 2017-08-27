@@ -5,6 +5,12 @@ require '../private/config/database.conf.php';
 require '../private/config/path.conf.php';
 require '../private/config/routes.conf.php';
 
+// Loading libs
+require '../private/libs/utils.lib.php';
+require '../private/libs/templates.lib.php';
+require '../private/libs/database.lib.php';
+
+
 global $g_log;
 $g_log = array();
 
@@ -42,87 +48,4 @@ else {
 global $g_log;
 if (is_array($g_log) && count($g_log) > 0){
     pre($g_log);
-}
-
-
-
-/* Functions */
-
-// Utils
-function pre($var){
-    echo '<pre>'.print_r($var,true).'</pre>';
-}
-
-// Database
-function db_connect(){
-    global $config;
-    static $link;
-    if (isset($link)) {
-        // Connection already exists
-        return $link;
-    }
-    $link = mysqli_connect(
-        $config['database']['host'],
-        $config['database']['username'],
-        $config['database']['password'],
-        $config['database']['name'],
-        $config['database']['port']
-    );
-
-    if (!$link) {
-        return false;
-    }
-
-    // New connection
-    return $link;
-}
-
-function db_query($sql){
-    $link = db_connect();
-    if ($result = mysqli_query($link, $sql)){
-        return $result;
-    }
-    return false;
-}
-
-function db_fetch($result){
-    return mysqli_fetch_assoc($result);
-}
-
-function db_free($result){
-    mysqli_free_result($result);
-}
-
-function db_num_rows($result){
-    return mysqli_num_rows($result);
-}
-
-function slash($t){
-    return str_replace('/','-',$t);
-}
-
-function component($name, $params, $expiration = 0){
-    global $path;
-    ob_start();
-    require $path['components'].$name.'.comp.php';
-    $content = ob_get_contents();
-    ob_end_clean();
-    $crc = crc32($content);
-    return '<div class="component component-'.slash($name).' crc-'.$crc.'">'.$content.'</div>';
-}
-
-function tpl($name,$params, $type = 1){
-    global $path;
-    $types = array();
-    $types[] = 'layout';
-    $types[] = 'components';
-    require $path['templates'].$types[$type].'/'.$name.'.tpl.php';
-}
-
-function region($name)
-{
-    global $params;
-    if (isset($params['region'][$name])) {
-        echo '<div class="region-'.slash($name).'">'.$params['region'][$name].'</div>';
-    }
 }
