@@ -1,26 +1,5 @@
 <?php
 
-// Routes definition
-$routes = array();
-$routes['index'] = 'index';
-$routes['404'] = '404';
-$routes['list'] = 'list';
-$routes['admin'] = 'admin/index';
-
-// Configurations
-$config['database'] = array();
-$config['database']['name'] = 'fast';
-$config['database']['host'] = 'localhost';
-$config['database']['port'] = '3306';
-$config['database']['username'] = 'root';
-$config['database']['password'] = 'David88';
-
-// Paths
-$path = array();
-$path['route'] = '../private/routes/';
-$path['components'] = '../private/components/';
-$path['templates'] = '../private/templates/';
-
 global $g_log;
 $g_log = array();
 
