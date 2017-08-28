@@ -3,13 +3,10 @@
 $result = db_query('select * from user');
 
 while($row = db_fetch($result)){
-    echo $row['name'].'<br>';
+    $data[] = $row['username'];
 }
 
 db_free($result);
 
-$result = db_query('select * from user order by name ASC');
 
-while($row = db_fetch($result)){
-    echo $row['name'].'<br>';
-}
+tpl('pages/user_list',array('data'=>$data));
