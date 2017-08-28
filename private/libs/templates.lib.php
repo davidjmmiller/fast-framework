@@ -24,6 +24,11 @@ function component($name, $params, $expiration = 0, $type = 0, $crc = NULL){
 
 function tpl($name,$params, $type = 1){
     global $path;
+
+    if ($type == 0 && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
+        echo json_encode($params['region']);
+        exit;
+    }
     $types = array();
     $types[] = 'layout';
     $types[] = 'components';
