@@ -13,6 +13,8 @@ require '../private/libs/database.lib.php';
 session_start();
 
 global $g_log;
+global $g_components;
+$g_components = array();
 $g_log = array();
 
 // Error handler

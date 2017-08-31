@@ -5,7 +5,9 @@
 
 function component($name, $params, $expiration = 0, $type = 0, $crc = NULL){
     global $path;
-    
+    global $g_components;
+
+
     /* Checking cache files
     $file_path = $path['cache'].($type == 0 ? 'public/' : 'private/'.session_id().'/').$name.'/'.abs(crc32(serialize($params)));
 
@@ -19,14 +21,16 @@ function component($name, $params, $expiration = 0, $type = 0, $crc = NULL){
     $content = ob_get_contents();
     ob_end_clean();
     $crc = crc32($content);
-    return '<div class="component component-'.slash($name).' crc-'.$crc.'">'.$content.'</div>';
+    $g_components[slash($name)] = '<div class="component component-'.slash($name).' crc-'.$crc.'">'.$content.'</div>';
+    return $g_components[slash($name)];
 }
 
 function tpl($name,$params, $type = 1){
     global $path;
+    global $g_components;
 
     if ($type == 0 && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
-        echo json_encode($params['region']);
+        echo json_encode($g_components);
         exit;
     }
     $types = array();
