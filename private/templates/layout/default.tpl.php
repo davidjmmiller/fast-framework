@@ -14,7 +14,7 @@
 
     <?php region('navigation'); ?>
 
-    <?php region('main'); ?>
+    <?php region('main-content'); ?>
 
     <div class="container">
       

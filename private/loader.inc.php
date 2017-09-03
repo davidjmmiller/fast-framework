@@ -16,6 +16,7 @@ global $g_log;
 global $g_components;
 $g_components = array();
 $g_log = array();
+$g_crc = array();
 
 // Error handler
 set_error_handler (

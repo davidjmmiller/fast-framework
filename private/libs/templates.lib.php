@@ -3,9 +3,10 @@
 /* Functions */
 
 
-function component($name, $params, $expiration = 0, $type = 0, $crc = NULL){
+function component($region,$name, $params, $expiration = 0, $type = 0, $crc = NULL){
     global $path;
     global $g_components;
+    global $g_crc;
 
 
     /* Checking cache files
@@ -21,28 +22,65 @@ function component($name, $params, $expiration = 0, $type = 0, $crc = NULL){
     $content = ob_get_contents();
     ob_end_clean();
     $crc = crc32($content);
-    $g_components[slash($name)] = '<div class="component component-'.slash($name).' crc-'.$crc.'">'.$content.'</div>';
-    return $g_components[slash($name)];
+    if (!isset($g_components[$region])){
+        $g_components[$region] = array();
+        $g_crc[$region] = array();
+    }
+    $g_components[$region][slash($name)] = '<div class="component component-'.slash($name).' crc-'.$crc.'">'.$content.'</div>';
+    $g_crc[$region][slash($name)] = $crc;
+    // return $g_components[$region][slash($name)];
 }
 
 function tpl($name,$params, $type = 1){
     global $path;
     global $g_components;
+    global $g_crc;
+
+    // Types definition
+    $types = array();
+    $types[0] = 'layout';
+    $types[1] = 'components';
 
     if ($type == 0 && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
         echo json_encode($g_components);
         exit;
     }
-    $types = array();
-    $types[] = 'layout';
-    $types[] = 'components';
-    require $path['templates'].$types[$type].'/'.$name.'.tpl.php';
+
+    if ($type == 0){
+        ob_start();
+        require $path['templates'].$types[$type].'/'.$name.'.tpl.php';
+        $content = ob_get_contents();
+        ob_end_clean();
+        $tmp = $g_crc;
+        $g_crc = array();
+        $g_crc[$name] = $tmp;
+        $g_crc[$name]['_crc'] = crc32($content);
+        return $content;
+    }
+    else {
+        require $path['templates'].$types[$type].'/'.$name.'.tpl.php';
+    }
+ 
 }
 
 function region($name)
 {
-    global $params;
-    if (isset($params['region'][$name])) {
-        echo '<div class="region-'.slash($name).'">'.$params['region'][$name].'</div>';
+    global $g_components;
+    global $g_crc;
+
+
+    $output = '';
+    $crc = 0;
+    if (isset($g_components[$name])) {
+        if (isset($g_components[$name]) && count($g_components[$name]) > 0){
+            foreach($g_components[$name] as $block_name => $block){
+                $output .= $block;
+            }
+        }
+        $crc = crc32($output);
+        $g_crc[$name]['_crc'] = $crc;
+        echo '<div class="region region-'.slash($name).' crc-'.abs($crc).'">';
+        echo $output;
+        echo '</div>';
     }
 }

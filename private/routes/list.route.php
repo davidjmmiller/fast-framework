@@ -1,10 +1,9 @@
 <?php
 
-$region['navigation'] = component('global/navigation',array());
-$region['main'] = component('pages/list',array());
-$region['bottom-columns'] = component('utils/columns',array());
-$region['footer'] = component('global/footer-copy',array());
-$params['region'] = $region;
+component('navigation', 'global/navigation',array());
+component('main-content','pages/list',array());
+component('bottom-columns','utils/columns',array());
+component('footer','global/footer',array());
 
 // Layout
-tpl('default',$params,0);
+echo tpl('default',array(),0);
