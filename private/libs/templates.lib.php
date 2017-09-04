@@ -8,15 +8,6 @@ function component($region,$name, $params, $expiration = 0, $type = 0, $crc = NU
     global $g_components;
     global $g_crc;
 
-
-    /* Checking cache files
-    $file_path = $path['cache'].($type == 0 ? 'public/' : 'private/'.session_id().'/').$name.'/'.abs(crc32(serialize($params)));
-
-    if (file_exists($file_path)){
-        $output = file_get_contents($file_path.'/component.cache.php');
-        
-    }*/
-
     ob_start();
     require $path['components'].$name.'.comp.php';
     $content = ob_get_contents();
@@ -26,7 +17,7 @@ function component($region,$name, $params, $expiration = 0, $type = 0, $crc = NU
         $g_components[$region] = array();
         $g_crc[$region] = array();
     }
-    $g_components[$region][slash($name)] = '<div class="component component-'.slash($name).' crc-'.$crc.'">'.$content.'</div>';
+    $g_components[$region][slash($name)] = '<div class="component component-'.slash($name).'">'.$content.'</div>';
     $g_crc[$region][slash($name)] = $crc;
     // return $g_components[$region][slash($name)];
 }
@@ -55,6 +46,10 @@ function tpl($name,$params, $type = 1){
         $g_crc = array();
         $g_crc[$name] = $tmp;
         $g_crc[$name]['_crc'] = crc32($content);
+
+        // Setting the cookie master value
+        setcookie('page_information', json_encode($g_crc), time() + (86400 * 30), "/"); // 86400 = 1 day
+        
         return $content;
     }
     else {
@@ -79,7 +74,7 @@ function region($name)
         }
         $crc = crc32($output);
         $g_crc[$name]['_crc'] = $crc;
-        echo '<div class="region region-'.slash($name).' crc-'.abs($crc).'">';
+        echo '<div class="region region-'.slash($name).'">';
         echo $output;
         echo '</div>';
     }
