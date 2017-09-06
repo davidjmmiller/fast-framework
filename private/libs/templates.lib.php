@@ -7,6 +7,7 @@ function component($region,$name, $params, $type = 'public',$expira = 1, $crc = 
     global $path;
     global $g_components;
     global $g_crc;
+    global $g_ajax;
     $new = false;
 
     $cache_path = $path['cache'].($type == 'public'? '' : session_id().'-');
@@ -26,6 +27,7 @@ function component($region,$name, $params, $type = 'public',$expira = 1, $crc = 
     else {
         $new = true;
     }
+
     if ($new){
         ob_start();
         require $path['components'].$name.'.comp.php';
@@ -44,10 +46,22 @@ function component($region,$name, $params, $type = 'public',$expira = 1, $crc = 
         $g_components[$region] = array();
         $g_crc[$region] = array();
     }
-    $g_components[$region][slash($name)] = '<div class="component component-'.slash($name).'">';
+
+    $g_components[$region][slash($name)] = '<div class="component component-' . slash($name) . '">';
     $g_components[$region][slash($name)] .= $content;
     $g_components[$region][slash($name)] .= '</div>';
     $g_crc[$region][slash($name)] = $crc;
+
+    if ($g_ajax) {
+        if (isset($_COOKIE['page_information'])){
+            $page_information = json_decode($_COOKIE['page_information'],true);
+            reset($page_information);
+            $layout = key($page_information);
+            if ($page_information[$layout][$region][slash($name)] == $crc){
+                $g_components[$region][slash($name)] = '<null>';
+            }
+        }
+    }
 
 
     // return $g_components[$region][slash($name)];
@@ -83,6 +97,7 @@ function tpl($name,$params, $type = 1){
     global $path;
     global $g_components;
     global $g_crc;
+    global $g_ajax;
 
     // Types definition
     $types = array();
@@ -92,7 +107,7 @@ function tpl($name,$params, $type = 1){
     if ($type == 0){
 
         // Ajax output
-        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
+        if ($g_ajax){
 
             // Saving the layout name
             $tmp = $g_crc;

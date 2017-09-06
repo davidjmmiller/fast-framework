@@ -1,6 +1,7 @@
 <?php
 
 // Loading configurations
+require '../private/config/general.conf.php';
 require '../private/config/database.conf.php';
 require '../private/config/path.conf.php';
 require '../private/config/routes.conf.php';

@@ -4,8 +4,8 @@
         <h1 class="display-3">User List</h1>
         <p>This is a list of current users registered in the system.</p>
         <ul>
-                      <li>davidm</li>
                       <li>dmiller</li>
+                      <li>davidm</li>
                   </ul>
         <p><a class="btn btn-primary btn-lg" href="#" role="button">View more &raquo;</a></p>
       </div>
