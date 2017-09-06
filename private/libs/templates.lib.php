@@ -3,14 +3,14 @@
 /* Functions */
 
 
-function component($region,$name, $params, $type = 'public',$expira = 1, $crc = NULL){
+function component($region,$name, $params, $type = 0,$expira = 1, $crc = NULL){
     global $path;
     global $g_components;
     global $g_crc;
     global $g_ajax;
     $new = false;
 
-    $cache_path = $path['cache'].($type == 'public'? '' : session_id().'-');
+    $cache_path = $path['cache'].($type == 0 ? '' : session_id().'-');
     $cache_filename = $cache_path.slash($name).'.cache.php';
     $cache_info_filename = $cache_path.slash($name).'.info.php';
     

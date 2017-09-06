@@ -1,6 +1,6 @@
 <?php
 
-component('navigation', 'global/navigation',array().'public',20);
+component('navigation', 'global/navigation',array(),0,10);
 component('main-content','pages/index',array());
 component('bottom-columns','utils/columns',array());
 component('footer','global/footer',array());
