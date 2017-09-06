@@ -8,7 +8,7 @@ $(function() {
         pageRefresh(ev);
     });
     
-    const pushUrl = (href) => {
+    const pushUrl = function(href) {
       history.pushState({}, '', href);
       window.dispatchEvent(new Event('popstate'));
     };
