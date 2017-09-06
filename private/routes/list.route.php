@@ -1,7 +1,7 @@
 <?php
 
 component('navigation', 'global/navigation',array());
-component('main-content','pages/list',array());
+component('main-content','pages/list',array(),'private');
 component('bottom-columns','utils/columns',array());
 component('footer','global/footer',array());
 component('footer','utils/columns',array());

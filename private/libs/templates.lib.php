@@ -3,22 +3,53 @@
 /* Functions */
 
 
-function component($region,$name, $params, $expiration = 0, $type = 0, $crc = NULL){
+function component($region,$name, $params, $type = 'public',$expira = 1, $crc = NULL){
     global $path;
     global $g_components;
     global $g_crc;
+    $new = false;
 
-    ob_start();
-    require $path['components'].$name.'.comp.php';
-    $content = ob_get_contents();
-    ob_end_clean();
-    $crc = crc32($content);
+    $cache_path = $path['cache'].($type == 'public'? '' : session_id().'-');
+    $cache_filename = $cache_path.slash($name).'.cache.php';
+    $cache_info_filename = $cache_path.slash($name).'.info.php';
+    
+    if (file_exists($cache_info_filename)) {
+        $info = file_get_contents($cache_info_filename);
+        list($expiration,$crc) = explode('|',$info);
+        if ($expiration > date('YmdHis')){
+            $content = file_get_contents($cache_filename);
+        }
+        else {
+            $new = true;
+        }
+    }
+    else {
+        $new = true;
+    }
+    if ($new){
+        ob_start();
+        require $path['components'].$name.'.comp.php';
+        $content = ob_get_contents();
+        ob_end_clean();
+        $crc = crc32($content);
+
+        // Storing the cache file
+        file_put_contents($cache_filename,$content);
+
+        // Storing file information
+        $expiration = date('YmdHis',mktime(date('H'),date('i')+$expira,date('s'),date('m'),date('d'),date('Y')));
+        file_put_contents($cache_info_filename,$expiration.'|'.$crc);
+    }
     if (!isset($g_components[$region])){
         $g_components[$region] = array();
         $g_crc[$region] = array();
     }
-    $g_components[$region][slash($name)] = '<div class="component component-'.slash($name).'">'.$content.'</div>';
+    $g_components[$region][slash($name)] = '<div class="component component-'.slash($name).'">';
+    $g_components[$region][slash($name)] .= $content;
+    $g_components[$region][slash($name)] .= '</div>';
     $g_crc[$region][slash($name)] = $crc;
+
+
     // return $g_components[$region][slash($name)];
 }
 
