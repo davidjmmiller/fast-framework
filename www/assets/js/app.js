@@ -5,7 +5,6 @@ $(function() {
 
     window.addEventListener('popstate', function(ev){
         var path = ev.currentTarget.window.location.href.pathname; 
-        //console.log(test.currentTarget);
         pageRefresh(ev);
     });
     
@@ -17,20 +16,29 @@ $(function() {
     pageRefresh = function (ev) {
         ev.preventDefault();
         var current_path = ev.target.pathname;
-        $.get(current_path, {}, function (data) {
+        $.get(current_path, JSON.parse($.cookie('page_information')) , function (data) {
             for (var region in data) {
+
+                // Removing component if not exists on the current path
                 $('.region-' + region + ' .component').each(function(itm,elm){
                     var component_name = $(elm).attr('class').split(' ')[1];
                     if (!data[region][component_name]){
                         $('.region-' + region + ' .' + component_name).html('');
                     }
                 });
+
+                // Sets the components content
                 for ( var component in data[region]){
                     
                     if($('.component-'+ component,'.region-' + region).length > 0){
-                        $('.component-'+ component,'.region-' + region).html(data[region][component]);
+                        
+                        // Refresh the component content
+                        if (data[region][component] != '<null>'){
+                            $('.component-'+ component,'.region-' + region).html(data[region][component]);
+                        }
                     }
                     else {
+                        // Adds a new region
                         $('.region-' + region).prepend(data[region][component]);
                     }
                 }
@@ -48,5 +56,6 @@ $(function() {
     function anchor_links() {
         $('a').click(pageRefresh);
     }
+
     anchor_links();
 });

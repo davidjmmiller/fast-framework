@@ -5,13 +5,7 @@ component('main-content','pages/index',array());
 component('bottom-columns','utils/columns',array());
 component('footer','global/footer',array());
 
-
-
 // Layout
 $output = tpl('default',array(),0);
-
-
-//pre($g_crc);
-//exit;
 
 echo $output;
