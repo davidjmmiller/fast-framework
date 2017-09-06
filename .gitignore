@@ -1,2 +1,4 @@
 .idea/
 private/config/database.conf.php
+private/cache
+
