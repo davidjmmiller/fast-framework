@@ -16,14 +16,14 @@ $(function() {
     pageRefresh = function (ev) {
         ev.preventDefault();
         var current_path = ev.target.pathname;
-        $.get(current_path, JSON.parse($.cookie('page_information')) , function (data) {
+        $.get(current_path, {} , function (data) {
             for (var region in data) {
 
                 // Removing component if not exists on the current path
                 $('.region-' + region + ' .component').each(function(itm,elm){
-                    var component_name = $(elm).attr('class').split(' ')[1];
-                    if (!data[region][component_name]){
-                        $('.region-' + region + ' .' + component_name).html('');
+                    var component_name = $(elm).attr('class').split(' ')[1].substring(10);
+                    if (data[region][component_name] == undefined){
+                        $('.region-' + region + ' .' + 'component-' + component_name).remove();
                     }
                 });
 
@@ -54,7 +54,7 @@ $(function() {
 
     // Capturing all the links
     function anchor_links() {
-        $('a').click(pageRefresh);
+        $("a:not('.ff')").click(pageRefresh).addClass('ff');
     }
 
     anchor_links();

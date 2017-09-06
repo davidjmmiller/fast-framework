@@ -16,8 +16,9 @@ function component($region,$name, $params, $type = 'public',$expira = 1, $crc = 
     
     if (file_exists($cache_info_filename)) {
         $info = file_get_contents($cache_info_filename);
-        list($expiration,$crc) = explode('|',$info);
-        if ($expiration > date('YmdHis')){
+        list($creation, $expiration,$crc) = explode('|',$info);
+        $current_datetime = date('YmdHis');
+        if ($current_datetime < $expiration){
             $content = file_get_contents($cache_filename);
         }
         else {
@@ -40,7 +41,8 @@ function component($region,$name, $params, $type = 'public',$expira = 1, $crc = 
 
         // Storing file information
         $expiration = date('YmdHis',mktime(date('H'),date('i')+$expira,date('s'),date('m'),date('d'),date('Y')));
-        file_put_contents($cache_info_filename,$expiration.'|'.$crc);
+        $creation = date('YmdHis');
+        file_put_contents($cache_info_filename, $creation.'|'. $expiration.'|'.$crc);
     }
     if (!isset($g_components[$region])){
         $g_components[$region] = array();
