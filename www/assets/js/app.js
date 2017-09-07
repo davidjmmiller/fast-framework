@@ -15,8 +15,14 @@ $(function() {
 
     pageRefresh = function (ev) {
         ev.preventDefault();
+        console.log(ev.target);
         var current_path = ev.target.pathname;
-        $.get(current_path, {} , function (data) {
+        var send_data = {};
+        if($(ev.target).prop('tagName') == 'FORM'){
+            send_data = $(ev.target).serializeArray();
+            console.log(send_data);
+        }
+        $.post(current_path, send_data , function (data) {
             for (var region in data) {
 
                 // Removing component if not exists on the current path
@@ -57,5 +63,11 @@ $(function() {
         $("a:not('.ff')").click(pageRefresh).addClass('ff');
     }
 
+    // Capturing all forms
+    function form_link() {
+        $("form:not('.ff')").submit(pageRefresh).addClass('ff');
+    }
+    
     anchor_links();
+    form_link();
 });
