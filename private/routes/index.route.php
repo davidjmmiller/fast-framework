@@ -1,9 +1,11 @@
 <?php
 
-$region['left-bar'] = component('utils/date',array());
-$region['main'] = component('pages/index',array());
-$region['footer'] = component('utils/date',array());
-$params['region'] = $region;
+component('navigation', 'global/navigation',array(),0,10);
+component('main-content','pages/index',array());
+component('bottom-columns','utils/columns',array());
+component('footer','global/footer',array());
 
 // Layout
-tpl('default',$params,0);
+$output = tpl('default',array(),0);
+
+echo $output;

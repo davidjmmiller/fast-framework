@@ -1,8 +1,10 @@
 <?php
 
-$region['left-bar'] = component('utils/date',array());
-$region['main'] = component('pages/list',array());
-$region['footer'] = component('utils/date',array());
-$params['region'] = $region;
+component('navigation', 'global/navigation',array(),'public',30);
+component('main-content','pages/list',array(),'private');
+component('bottom-columns','utils/columns',array());
+component('footer','global/footer',array());
+component('footer','utils/columns',array());
 
-tpl('default',$params,0);
+// Layout
+echo tpl('default',array(),0);

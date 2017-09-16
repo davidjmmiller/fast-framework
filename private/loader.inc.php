@@ -1,6 +1,7 @@
 <?php
 
 // Loading configurations
+require '../private/config/general.conf.php';
 require '../private/config/database.conf.php';
 require '../private/config/path.conf.php';
 require '../private/config/routes.conf.php';
@@ -13,7 +14,10 @@ require '../private/libs/database.lib.php';
 session_start();
 
 global $g_log;
+global $g_components;
+$g_components = array();
 $g_log = array();
+$g_crc = array();
 
 // Error handler
 set_error_handler (

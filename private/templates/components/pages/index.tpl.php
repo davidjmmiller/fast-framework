@@ -1,2 +1,8 @@
-<h3>Main page</h3>
-<p>Hello this is a test</p>
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1 class="display-3">Test</h1>
+        <p>Main page.</p>
+        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+      </div>
+    </div>
